@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDX Waveform Visualizer | Electrodiagnosis Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <h1>EDX <span class="highlight">Visualizer</span></h1>
+                <p class="subtitle">Nerve Conduction & Late Response Simulation</p>
+            </div>
+
+            <div class="control-panel">
+                <section class="control-group">
+                    <label>Display Focus</label>
+                    <div class="btn-grid">
+                        <button id="btn-all" class="mode-btn active" onclick="setMode('all')">All Waves</button>
+                        <button id="btn-m" class="mode-btn" onclick="setMode('m')">M Wave</button>
+                        <button id="btn-a" class="mode-btn" onclick="setMode('a')">A Wave</button>
+                        <button id="btn-h" class="mode-btn" onclick="setMode('h')">H Reflex</button>
+                        <button id="btn-f" class="mode-btn" onclick="setMode('f')">F Wave</button>
+                    </div>
+                </section>
+
+                <section class="control-group">
+                    <div class="label-row">
+                        <label for="stimulusRange">Stimulus Intensity</label>
+                        <span id="stimValue" class="value-badge">50 mA</span>
+                    </div>
+                    <input type="range" id="stimulusRange" min="5" max="100" value="50" oninput="updateStimulus(this.value)">
+                    <div class="stim-indicators">
+                        <span class="stim-tag">Subthreshold</span>
+                        <span class="stim-tag">Submaximal</span>
+                        <span class="stim-tag">Supramaximal</span>
+                    </div>
+                    <div id="stimType" class="stim-status">Supramaximal</div>
+                </section>
+
+                <section class="control-group">
+                    <label>Simulation Settings</label>
+                    <div class="toggle-list">
+                        <div class="toggle-item">
+                            <span>Raster Stacking (10 Sweeps)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="rasterToggle" onchange="redraw()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>High-Gain Zoom (Late Waves)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="gainToggle" checked onchange="redraw()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Enable S1 H-Reflex Arc</span>
+                            <label class="switch">
+                                <input type="checkbox" id="hReflexActive" checked onchange="redraw()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="toggle-item">
+                            <span>Enable Axon Sprout (A-Wave)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="aWaveActive" checked onchange="redraw()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="info-panel">
+                <h3>Clinical Insights</h3>
+                <div id="infoText" class="info-content">
+                    Select a wave or adjust the stimulus to see how the morphology changes based on neurophysiology.
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="scope-wrapper">
+                <div class="scope-header">
+                    <div class="scope-status">
+                        <span class="status-dot"></span> Live Simulation
+                    </div>
+                    <div id="clinical-alert" class="clinical-alert"></div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="scopeCanvas" width="1200" height="600"></canvas>
+                </div>
+                <div class="legend-bar">
+                    <div class="legend-item">
+                        <span class="color-box m-wave"></span>
+                        <span class="label">M Wave</span>
+                        <span class="desc">(2–5ms) Direct Motor</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box a-wave"></span>
+                        <span class="label">A Wave</span>
+                        <span class="desc">(15–25ms) Sprout</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box h-wave"></span>
+                        <span class="label">H Reflex</span>
+                        <span class="desc">(30–34ms) Monosynaptic</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box f-wave"></span>
+                        <span class="label">F Wave</span>
+                        <span class="desc">(28–50ms) Backfire</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
